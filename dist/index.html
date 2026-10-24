@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#07110d">
+  <meta name="description" content="Golf Motion Lab 手機高爾夫揮桿視訊分析原型">
+  <title>Golf Motion Lab｜高爾夫揮桿分析</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="extras.css">
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar">
+      <a class="brand" href="#" aria-label="Golf Motion Lab 首頁"><span class="brand-mark">G</span><span><b>Golf Motion Lab</b><small>Video × 3D swing review</small></span></a>
+      <div class="status-pill"><span class="status-dot"></span><span id="systemStatus">本機分析原型</span></div>
+      <button class="icon-btn" id="helpButton" aria-label="顯示使用說明">?</button>
+    </header>
+
+    <main>
+      <section class="setup-strip" aria-label="拍攝設定">
+        <div class="step-title"><span>01</span><div><b>選擇拍攝角度</b><small>不同視角會使用不同的檢查重點</small></div></div>
+        <div class="segmented" role="group" aria-label="拍攝角度">
+          <button class="segment active" data-capture="rear" aria-pressed="true"><span class="angle-icon rear-icon"></span><span><b>後側 DTL</b><small>沿目標線拍攝</small></span></button>
+          <button class="segment" data-capture="side" aria-pressed="false"><span class="angle-icon side-icon"></span><span><b>側面 Face-on</b><small>正對胸口拍攝</small></span></button>
+        </div>
+        <div class="camera-hint" id="cameraHint"><b>後側架設</b><span>手機與雙手同高，鏡頭沿目標線，完整拍到球桿與雙腳。</span></div>
+      </section>
+
+      <section class="studio-grid">
+        <article class="panel video-panel">
+          <header class="panel-head"><div><span class="panel-kicker">SOURCE VIDEO</span><h1>揮桿影片</h1></div><div class="view-badge" id="captureBadge">後側 DTL</div></header>
+          <div class="video-stage" id="videoStage">
+            <video id="video" playsinline muted></video>
+            <canvas id="videoCanvas" aria-hidden="true"></canvas>
+            <div class="framing-guide" id="framingGuide" aria-hidden="true"><div class="head-guide"></div><div class="body-guide"></div><div class="target-line"></div></div>
+            <div class="empty-state" id="emptyState"><div class="empty-figure">♙</div><b>準備你的揮桿影片</b><span>開啟相機錄影、匯入影片，或先體驗示範</span><div class="empty-actions"><button class="primary" id="cameraButton">開啟相機</button><label class="secondary" for="fileInput">匯入影片</label><input id="fileInput" type="file" accept="video/*,.mov,.mp4,.m4v,.webm"></div><button class="demo-launch" id="demoButton">▶ 體驗示範影片</button></div>
+            <div class="import-message" id="importMessage" role="status" aria-live="polite"></div>
+            <div class="recording-badge" id="recordingBadge"><span></span>REC <b id="recordingTime">00:00</b></div>
+            <div class="quality-chip" id="qualityChip">等待影片</div>
+          </div>
+          <div class="transport">
+            <button id="playButton" class="transport-btn" aria-label="播放或暫停">▶</button>
+            <span id="currentTime">00:00.00</span><input id="timeline" type="range" min="0" max="1000" value="0" aria-label="影片時間軸"><span id="duration">00:00.00</span>
+            <select id="speed" aria-label="播放速度"><option value="0.25">0.25×</option><option value="0.5">0.5×</option><option value="1" selected>1×</option></select>
+          </div>
+          <div class="video-actions"><button class="primary" id="recordButton" disabled>開始錄影</button><button class="secondary" id="analyzeButton" disabled>檢查影片品質</button><button class="ghost" id="clearButton" disabled>清除</button></div>
+        </article>
+
+        <article class="panel model-panel">
+          <header class="panel-head"><div><span class="panel-kicker">INTERACTIVE 3D</span><h2>3D 泡泡人</h2></div><div class="prototype-tag">動作示意模型</div></header>
+          <div class="model-toolbar" role="group" aria-label="3D 視角"><button class="view-button active" data-view="rear">後側</button><button class="view-button" data-view="side">側邊</button><button class="view-button" data-view="top">俯視</button><button class="view-button" data-view="free">自由旋轉</button></div>
+          <div class="model-stage" id="modelStage" tabindex="0" aria-label="可拖曳旋轉的 3D 泡泡人；使用方向鍵也可旋轉">
+            <canvas id="modelCanvas"></canvas>
+            <div class="axis-cube"><i>上</i><b>前</b><span>右</span></div>
+            <div class="drag-tip">拖曳旋轉 · 滾輪縮放</div>
+          </div>
+          <div class="phase-row"><span id="phaseCode">P1</span><div><b id="phaseName">Address</b><small id="phaseDescription">預備站姿</small></div><input id="phaseSlider" type="range" min="0" max="1000" value="0" aria-label="3D 動作階段"></div>
+          <div class="metric-grid"><div><span>軀幹傾角</span><b id="trunkMetric">18°</b></div><div><span>髖部旋轉</span><b id="hipMetric">2°</b></div><div><span>肩髖分離</span><b id="xFactorMetric">4°</b></div><div><span>重心位置</span><b id="balanceMetric">中央</b></div></div>
+        </article>
+      </section>
+
+      <section class="analysis-grid">
+        <article class="panel feedback-panel"><header class="panel-head"><div><span class="panel-kicker">GUIDED REVIEW</span><h2>回饋與檢核</h2></div><button class="ghost mini" id="resetChecks">重設</button></header><div class="disclaimer"><b>目前版本的邊界</b><span>會檢查影片長度、亮度、方向與取景；技術動作項目供人工逐格覆核，尚未宣稱 AI 已從影片量測關節角度。</span></div><div id="feedbackList" class="feedback-list"></div></article>
+        <aside class="panel session-panel"><header class="panel-head"><div><span class="panel-kicker">SESSION</span><h2>本次分析</h2></div></header><dl><div><dt>拍攝視角</dt><dd id="summaryView">後側 DTL</dd></div><div><dt>影片狀態</dt><dd id="summaryVideo">尚未載入</dd></div><div><dt>畫面品質</dt><dd id="summaryQuality">待檢查</dd></div><div><dt>3D 狀態</dt><dd>示意動作同步</dd></div></dl><button class="primary full" id="exportButton">匯出分析摘要</button><p class="privacy-note">🔒 影片只在此瀏覽器中處理，不會自動上傳。</p></aside>
+      </section>
+    </main>
+    <footer class="site-footer">
+      <section class="usage-counter" aria-label="使用次數分析"><span class="footer-label">USAGE</span><div><b id="visitCount">1</b><small>本裝置開啟</small></div><div><b id="analysisCount">0</b><small>影片分析</small></div><div><b id="demoCount">0</b><small>Demo 體驗</small></div></section>
+      <section class="association-brand"><img src="tshta-logo.png" alt="臺灣運動健康科技學會 Logo"><div><b>臺灣運動健康科技學會</b><small>更新：2026 年 10 月</small></div></section>
+    </footer>
+  </div>
+
+  <dialog id="demoDialog"><button class="dialog-close" id="closeDemo" aria-label="關閉">×</button><span class="panel-kicker">QUICK START DEMO</span><h2>選擇一支示範影片</h2><p>每支影片約 8 秒，可直接播放、切換階段、檢查品質並操作 3D 泡泡人。</p><div class="demo-grid"><button data-demo="driver"><img src="demo/golf_driver_motion_preview.png" alt="Driver 開球木桿示範預覽"><b>Driver</b><small>完整上桿與收桿</small></button><button data-demo="seven_iron"><img src="demo/golf_seven_iron_motion_preview.png" alt="7 號鐵桿示範預覽"><b>7 號鐵桿</b><small>先球後地</small></button><button data-demo="pitch"><img src="demo/golf_pitch_motion_preview.png" alt="Pitch 劈桿示範預覽"><b>Pitch</b><small>短上桿控制</small></button><button data-demo="putter"><img src="demo/golf_putter_motion_preview.png" alt="推桿示範預覽"><b>Putter</b><small>肩膀鐘擺</small></button></div></dialog>
+
+  <dialog id="helpDialog"><button class="dialog-close" id="closeHelp" aria-label="關閉">×</button><h2>如何使用第一版</h2><ol><li>先選後側 DTL 或側面 Face-on。</li><li>開啟相機錄影，或匯入手機裡的揮桿影片。</li><li>按「檢查影片品質」，取得取景、長度與亮度回饋。</li><li>播放影片並拖曳時間軸，右側 3D 泡泡人會同步顯示八個揮桿階段。</li><li>拖曳泡泡人，或按後側／側邊／俯視切換觀察。</li><li>人工確認下方技術檢核後，可匯出本次摘要。</li></ol><p>下一階段可接入 MediaPipe／MoveNet 類姿態模型，讓骨架與角度真正由影片產生。</p></dialog>
+  <script src="app.js"></script>
+</body>
+</html>

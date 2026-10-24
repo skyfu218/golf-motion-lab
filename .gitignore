@@ -1,0 +1,6 @@
+.DS_Store
+*.log
+.firebase/
+firebase-debug.log
+輸出/
+demo/*_preview.png
