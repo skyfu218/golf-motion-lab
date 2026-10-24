@@ -6,7 +6,7 @@
   <meta name="theme-color" content="#07110d">
   <meta name="description" content="Golf Motion Lab 手機高爾夫揮桿視訊分析原型">
   <title>Golf Motion Lab｜高爾夫揮桿分析</title>
-  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="styles.css?v=20261024-motion2">
   <link rel="stylesheet" href="extras.css">
 </head>
 <body>
@@ -44,7 +44,7 @@
             <span id="currentTime">00:00.00</span><input id="timeline" type="range" min="0" max="1000" value="0" aria-label="影片時間軸"><span id="duration">00:00.00</span>
             <select id="speed" aria-label="播放速度"><option value="0.25">0.25×</option><option value="0.5">0.5×</option><option value="1" selected>1×</option></select>
           </div>
-          <div class="video-actions"><button class="primary" id="recordButton" disabled>開始錄影</button><button class="secondary" id="analyzeButton" disabled>檢查影片品質</button><button class="ghost" id="clearButton" disabled>清除</button></div>
+          <div class="video-actions"><button class="primary" id="recordButton" disabled>開始錄影</button><label class="secondary compact-import" for="fileInput">匯入自己的影片</label><button class="secondary" id="analyzeButton" disabled>檢查影片品質</button><button class="ghost" id="clearButton" disabled>清除</button></div>
         </article>
 
         <article class="panel model-panel">
@@ -80,6 +80,6 @@
   <dialog id="demoDialog"><button class="dialog-close" id="closeDemo" aria-label="關閉">×</button><span class="panel-kicker">QUICK START DEMO</span><h2>選擇一支示範影片</h2><p>每支影片約 8 秒，可直接播放、切換階段、檢查品質並操作 3D 泡泡人。</p><div class="demo-grid"><button data-demo="driver"><img src="demo/golf_driver_motion_preview.png" alt="Driver 開球木桿示範預覽"><b>Driver</b><small>完整上桿與收桿</small></button><button data-demo="seven_iron"><img src="demo/golf_seven_iron_motion_preview.png" alt="7 號鐵桿示範預覽"><b>7 號鐵桿</b><small>先球後地</small></button><button data-demo="pitch"><img src="demo/golf_pitch_motion_preview.png" alt="Pitch 劈桿示範預覽"><b>Pitch</b><small>短上桿控制</small></button><button data-demo="putter"><img src="demo/golf_putter_motion_preview.png" alt="推桿示範預覽"><b>Putter</b><small>肩膀鐘擺</small></button></div></dialog>
 
   <dialog id="helpDialog"><button class="dialog-close" id="closeHelp" aria-label="關閉">×</button><h2>如何使用第一版</h2><ol><li>先選後側 DTL 或側面 Face-on。</li><li>開啟相機錄影，或匯入手機裡的揮桿影片。</li><li>按「檢查影片品質」，取得取景、長度與亮度回饋。</li><li>播放影片並拖曳時間軸，右側 3D 泡泡人會同步顯示八個揮桿階段。</li><li>拖曳泡泡人，或按後側／側邊／俯視切換觀察。</li><li>人工確認下方技術檢核後，可匯出本次摘要。</li></ol><p>下一階段可接入 MediaPipe／MoveNet 類姿態模型，讓骨架與角度真正由影片產生。</p></dialog>
-  <script src="app.js?v=20261024-practice"></script>
+  <script src="app.js?v=20261024-motion2"></script>
 </body>
 </html>
