@@ -50,4 +50,6 @@ $('#exportButton').onclick=()=>{const checked=[...document.querySelectorAll('.fe
 $('#helpButton').onclick=()=>$('#helpDialog').showModal();$('#closeHelp').onclick=()=>$('#helpDialog').close();
 const demoFiles={driver:['demo/golf_driver_motion.mp4','Driver 開球木桿示範'],seven_iron:['demo/golf_seven_iron_motion.mp4','7 號鐵桿示範'],pitch:['demo/golf_pitch_motion.mp4','Pitch 劈桿示範'],putter:['demo/golf_putter_motion.mp4','Putter 推桿示範']};
 $('#demoButton').onclick=()=>$('#demoDialog').showModal();$('#closeDemo').onclick=()=>$('#demoDialog').close();$$('[data-demo]').forEach(button=>button.onclick=()=>{const [src,label]=demoFiles[button.dataset.demo];loadBlob(src,label);usage.demos+=1;localStorage.setItem('gml-demos',usage.demos);renderUsage();$('#demoDialog').close()});
+// Keep a ready-to-use practice clip on screen from the first visit.
+loadBlob(demoFiles.driver[0],`${demoFiles.driver[1]}（操作練習）`);
 window.addEventListener('beforeunload',stopStream);
